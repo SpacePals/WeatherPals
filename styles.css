@@ -1,0 +1,297 @@
+/* styles.css - NASA Weather Dashboard */
+
+/* Custom colors and utilities */
+.text-red-600 { color: #dc2626; }
+.bg-red-500 { background-color: #ef4444; }
+.text-blue-600 { color: #2563eb; }
+.bg-blue-500 { background-color: #3b82f6; }
+.text-green-600 { color: #16a34a; }
+.bg-green-500 { background-color: #22c55e; }
+.text-purple-600 { color: #9333ea; }
+.bg-purple-500 { background-color: #a855f7; }
+.text-orange-600 { color: #ea580c; }
+.bg-orange-500 { background-color: #f97316; }
+.text-yellow-600 { color: #ca8a04; }
+.bg-yellow-500 { background-color: #eab308; }
+
+/* Hero section with map */
+.hero-section-with-map {
+    height: 70vh;
+    position: relative;
+    overflow: hidden;
+}
+
+#hero-map {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+/* Leaflet map customization */
+.leaflet-container {
+    background: #1e3a8a;
+    font-family: 'Poppins', sans-serif;
+}
+
+.leaflet-popup-content {
+    font-family: 'Poppins', sans-serif;
+}
+
+.leaflet-control-zoom a {
+    background: white !important;
+    color: #333 !important;
+    border: none !important;
+}
+
+/* Custom animations */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-slideIn {
+    animation: slideIn 0.6s ease-out forwards;
+}
+
+/* Custom styling for probability cards */
+.probability-card {
+    transition: all 0.3s ease;
+    border: 1px solid #e5e7eb;
+    position: relative;
+    overflow: hidden;
+}
+
+.probability-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.probability-card:hover::before {
+    transform: scaleX(1);
+}
+
+.probability-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+}
+
+/* Form element styling */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: #e5e7eb;
+    outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #3b82f6;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: #2563eb;
+    transform: scale(1.1);
+}
+
+input[type="checkbox"] {
+    accent-color: #3b82f6;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+}
+
+/* Progress bars */
+.progress-bar {
+    transition: width 1s ease-in-out, background-color 0.3s ease;
+}
+
+/* Loading state */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.8);
+    z-index: 40;
+}
+
+/* Message styles */
+.success-message {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+    margin: 1rem 0;
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+    border-left: 4px solid #047857;
+}
+
+.error-message {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+    margin: 1rem 0;
+    box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+    border-left: 4px solid #b91c1c;
+}
+
+/* Risk level indicators */
+.risk-high {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    border-left: 4px solid #dc2626;
+}
+
+.risk-medium {
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border-left: 4px solid #d97706;
+}
+
+.risk-low {
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    border-left: 4px solid #16a34a;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section-with-map {
+        height: 60vh;
+    }
+    
+    .hero-section-with-map h1 {
+        font-size: 2rem;
+    }
+    
+    .probability-card {
+        margin-bottom: 1rem;
+    }
+    
+    #hero .absolute {
+        left: 4px;
+        right: 4px;
+    }
+}
+
+@media (max-width: 640px) {
+    .hero-section-with-map {
+        height: 50vh;
+    }
+    
+    .grid-cols-1 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .probability-card {
+        break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .dark\:bg-gray-900 {
+        background-color: #111827;
+    }
+    
+    .dark\:text-white {
+        color: white;
+    }
+}
+
+/* Focus styles for accessibility */
+button:focus,
+input:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Smooth transitions for all interactive elements */
+button, 
+input, 
+select, 
+.probability-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
