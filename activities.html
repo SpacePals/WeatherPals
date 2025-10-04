@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggested Activities - WeatherPals</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-nav-dark p-4 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="assets/logo.png" alt="Weather Logo" class="h-16 w-auto mr-3">
+                <span class="text-white text-xl font-space font-bold hover:text-blue-500 transition-colors duration-300">WeatherPals</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Activities Content -->
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-8 font-space">Suggested Activities</h1>
+        
+        <!-- Weather Summary -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <h2 class="text-xl font-bold mb-4 font-space text-blue-600">Current Weather</h2>
+            <div id="weather-summary" class="text-gray-700 font-poppins">
+                Loading weather information...
+            </div>
+        </div>
+
+        <!-- Activities Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Recommended Activities -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-bold mb-4 font-space text-green-600">Highly Recommended</h2>
+                <div id="recommended-activities" class="space-y-3 font-poppins">
+                    Loading recommendations...
+                </div>
+            </div>
+
+            <!-- Alternative Activities -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-bold mb-4 font-space text-amber-600">Alternative Options</h2>
+                <div id="alternative-activities" class="space-y-3 font-poppins">
+                    Loading alternatives...
+                </div>
+            </div>
+
+            <!-- Indoor Backup Activities -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-bold mb-4 font-space text-purple-600">Indoor Backup Plans</h2>
+                <div id="indoor-activities" class="space-y-3 font-poppins">
+                    Loading indoor options...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get weather data from localStorage (will be set by main page)
+        window.addEventListener('DOMContentLoaded', function() {
+            const weatherData = JSON.parse(localStorage.getItem('weatherData'));
+            const location = localStorage.getItem('location');
+            
+            if (weatherData && location) {
+                displayActivities(weatherData, location);
+            } else {
+                document.getElementById('weather-summary').textContent = 
+                    'No weather data available. Please return to the main page.';
+            }
+        });
+
+        function displayActivities(weatherData, location) {
+            // Display weather summary
+            const summary = document.getElementById('weather-summary');
+            summary.innerHTML = `
+                <p class="mb-2">Location: ${location}</p>
+                <p class="mb-2">Temperature: ${weatherData.temp_c}°C / ${weatherData.temp_f}°F</p>
+                <p class="mb-2">Condition: ${weatherData.condition.text}</p>
+                <p>Wind: ${weatherData.wind_kph} km/h ${weatherData.wind_dir}</p>
+            `;
+
+            // Get activities based on weather
+            const activities = getDetailedActivities(weatherData);
+
+            // Display activities in their respective sections
+            document.getElementById('recommended-activities').innerHTML = 
+                activities.recommended.map(a => `<div class="flex items-center p-2 hover:bg-gray-50 rounded">${a}</div>`).join('');
+            
+            document.getElementById('alternative-activities').innerHTML = 
+                activities.alternative.map(a => `<div class="flex items-center p-2 hover:bg-gray-50 rounded">${a}</div>`).join('');
+            
+            document.getElementById('indoor-activities').innerHTML = 
+                activities.indoor.map(a => `<div class="flex items-center p-2 hover:bg-gray-50 rounded">${a}</div>`).join('');
+        }
+
+        function getDetailedActivities(weatherData) {
+            const temp = weatherData.temp_c;
+            const condition = weatherData.condition.text.toLowerCase();
+            const windSpeed = weatherData.wind_kph;
+            const humidity = weatherData.humidity;
+            const isRaining = condition.includes('rain') || condition.includes('drizzle');
+            const isSnowing = condition.includes('snow');
+            const isClear = condition.includes('clear') || condition.includes('sunny');
+            const isCloudy = condition.includes('cloud') || condition.includes('overcast');
+            
+            let recommended = [];
+            let alternative = [];
+            let indoor = [];
+
+            // Recommend activities based on conditions
+            if (temp >= 20 && temp <= 28 && !isRaining && windSpeed < 20) {
+                recommended.push('🏃‍♂️ Go for a run or jog');
+                recommended.push('🚴‍♂️ Cycling in perfect conditions');
+                recommended.push('⛺ Hiking or nature walks');
+                recommended.push('🎾 Play tennis or outdoor sports');
+                recommended.push('📸 Photography in natural light');
+            }
+
+            if (temp > 25 && !isRaining && windSpeed < 25) {
+                recommended.push('🏊‍♂️ Swimming');
+                recommended.push('🏖️ Beach activities');
+                recommended.push('🎣 Fishing');
+                recommended.push('⛵ Sailing');
+            }
+
+            // Alternative activities
+            if (!isRaining && windSpeed < 30) {
+                alternative.push('🎨 Outdoor painting');
+                alternative.push('🎭 Visit an outdoor cafe');
+                alternative.push('🌺 Garden visit');
+                alternative.push('🎪 Local outdoor events');
+            }
+
+            if (windSpeed > 15 && windSpeed < 30) {
+                alternative.push('🪁 Fly a kite');
+                alternative.push('🏄‍♂️ Try surfing');
+            }
+
+            // Indoor backup activities
+            indoor.push('🎮 Video games and board games');
+            indoor.push('🎨 Indoor arts and crafts');
+            indoor.push('📚 Visit the library');
+            indoor.push('🎭 Check local theater shows');
+            indoor.push('🏛️ Museum visits');
+            indoor.push('🍳 Cooking or baking');
+
+            return {
+                recommended: recommended,
+                alternative: alternative,
+                indoor: indoor
+            };
+        }
+    </script>
+</body>
+</html>
