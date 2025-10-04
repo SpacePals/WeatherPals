@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather Dashboard - NASA Earth Data</title>
+    <title>WeatherPals - NASA Earth Data Dashboard</title>
+    <meta name="description" content="Real-time weather analysis using NASA Earth observation data and Meteomatics API">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,63 +27,175 @@
         }
     </script>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
     <!-- Navigation Bar -->
-    <nav class="bg-nav-dark p-4 shadow-lg">
+    <nav class="bg-nav-dark p-4 shadow-2xl sticky top-0 z-50 backdrop-blur-sm">
         <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center">
-                <img src="assets/logo.png" alt="Weather Logo" class="h-16 w-auto mr-3">
-                <span class="text-white text-xl font-space font-bold hover:text-blue-500 transition-colors duration-300">WeatherPals</span>
+            <div class="flex items-center group">
+                <img src="assets/logo.png" alt="Weather Logo" class="h-16 w-auto mr-3 transition-transform duration-300 group-hover:scale-110">
+                <span class="text-white text-2xl font-space font-bold hover:text-blue-400 transition-colors duration-300 cursor-pointer">WeatherPals</span>
             </div>
             <div class="hidden md:flex space-x-6">
-                <a href="#" class="text-white hover:text-blue-300 transition-all duration-300 hover:scale-105 font-poppins">Home</a>
-                <a href="#" class="text-white hover:text-blue-300 transition-all duration-300 hover:scale-105 font-poppins">Forecast</a>
-                <a href="#" class="text-white hover:text-blue-300 transition-all duration-300 hover:scale-105 font-poppins">Maps</a>
-                <a href="#" class="text-white hover:text-blue-300 transition-all duration-300 hover:scale-105 font-poppins">About</a>
+                <a href="#hero" class="text-white hover:text-blue-400 transition-all duration-300 hover:scale-105 font-poppins relative group">
+                    Home
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#results-section" class="text-white hover:text-blue-400 transition-all duration-300 hover:scale-105 font-poppins relative group">
+                    Analysis
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#about" class="text-white hover:text-blue-400 transition-all duration-300 hover:scale-105 font-poppins relative group">
+                    About
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+                <a href="#footer" class="text-white hover:text-blue-400 transition-all duration-300 hover:scale-105 font-poppins relative group">
+                    Contact
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="text-white focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="hero" class="relative flex items-center overflow-hidden bg-black py-20">
-    <div class="absolute inset-0">
-        <img src ="https://images.pexels.com/photos/433155/pexels-photo-433155.jpeg?cs=srgb&dl=pexels-pixabay-433155.jpg&fm=jpg" class="w-full h-full object-cover opacity-70" alt="Dynamic NASA Image">
-    </div>
-    <div class="container mx-auto px-6 relative z-20">
-        <div class="text-white max-w-3xl">
-            <h1 class="text-5xl font-space font-bold mb-4 tracking-tight">
-                <span class="block">NASA Earth Data</span>
-                <span class="block">Weather Dashboard</span>
-            </h1>
-            <p class="text-xl mb-8 font-poppins">
-                Analyze weather probabilities using NASA Earth observation data
-            </p>
-                <div class="bg-white bg-opacity-90 backdrop-blur-md rounded-xl p-6 shadow-2xl max-w-2xl opacity-0 animate-fadeIn" style="animation-delay: 0.6s">
+    <section id="hero" class="relative flex items-center overflow-hidden bg-black py-24 min-h-screen">
+        <div class="absolute inset-0">
+            <img src="https://images.pexels.com/photos/433155/pexels-photo-433155.jpeg?cs=srgb&dl=pexels-pixabay-433155.jpg&fm=jpg" 
+                 class="w-full h-full object-cover opacity-70" 
+                 alt="Dynamic NASA Image">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-20">
+            <div class="text-white max-w-4xl">
+                <div class="opacity-0 animate-fadeIn" style="animation-delay: 0.2s">
+                    <h1 class="text-6xl md:text-7xl font-space font-bold mb-6 tracking-tight leading-tight">
+                        <span class="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">NASA Earth Data</span>
+                        <span class="block mt-2">Weather Dashboard</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl mb-8 font-poppins text-gray-200 max-w-2xl">
+                        Analyze real-time weather conditions and probabilities using advanced NASA Earth observation data and Meteomatics API
+                    </p>
+                </div>
+                
+                <div class="bg-white bg-opacity-95 backdrop-blur-md rounded-2xl p-8 shadow-2xl max-w-2xl opacity-0 animate-fadeIn hover:shadow-blue-500/20 transition-all duration-500" style="animation-delay: 0.6s">
+                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-4">🌍 Search Location</h3>
+                    
                     <div class="flex mb-4">
-                        <input type="text" id="location-search" placeholder="Enter location name..." 
-                               class="p-3 w-full rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800 font-poppins transition-all duration-300">
-                        <button id="search-btn" class="bg-blue-600 text-white px-6 py-3 rounded-r-lg hover:bg-blue-700 transition-all duration-300 hover:scale-105 transform font-poppins hover:shadow-lg">
+                        <input type="text" 
+                               id="location-search" 
+                               placeholder="Enter city, country, or coordinates..." 
+                               class="p-4 w-full rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 font-poppins transition-all duration-300 border-2 border-gray-200 focus:border-blue-500">
+                        <button id="search-btn" 
+                                class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-r-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 hover:scale-105 transform font-poppins font-semibold hover:shadow-lg shadow-blue-500/50 active:scale-95">
                             Search
                         </button>
                     </div>
-                    <div class="flex items-center text-gray-600">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    
+                    <div class="flex items-center text-gray-700 bg-gray-50 p-3 rounded-lg">
+                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
                         </svg>
-                        <span class="text-sm font-poppins" id="selected-location">Enter a location to begin analysis</span>
+                        <span class="text-sm font-poppins font-medium" id="selected-location">Enter a location to begin analysis</span>
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex flex-wrap gap-4 opacity-0 animate-fadeIn" style="animation-delay: 0.9s">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
+                        <span class="text-sm font-poppins">🛰️ Real-time Data</span>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
+                        <span class="text-sm font-poppins">🌦️ Weather Probabilities</span>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
+                        <span class="text-sm font-poppins">📊 Advanced Analytics</span>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+            </svg>
+        </div>
     </section>
+
+    <!-- Features Section -->
+    <section id="about" class="py-16 bg-gradient-to-b from-gray-50 to-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-space font-bold text-gray-800 mb-4">Powered by Advanced Technology</h2>
+                <p class="text-gray-600 font-poppins text-lg max-w-2xl mx-auto">
+                    Combining NASA Earth observation data with cutting-edge weather APIs for accurate predictions
+                </p>
+            </div>
             
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
+                    <div class="text-5xl mb-4">🛰️</div>
+                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-3">Satellite Data</h3>
+                    <p class="text-gray-600 font-poppins">Access real-time weather data from Meteomatics API integrated with NASA Earth observations</p>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
+                    <div class="text-5xl mb-4">📊</div>
+                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-3">Smart Analysis</h3>
+                    <p class="text-gray-600 font-poppins">Advanced algorithms calculate weather probabilities based on precipitation patterns</p>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
+                    <div class="text-5xl mb-4">🌍</div>
+                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-3">Global Coverage</h3>
+                    <p class="text-gray-600 font-poppins">Get weather insights for any location worldwide with precise coordinate-based queries</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="bg-nav-dark text-white py-8 mt-12">
+    <footer id="footer" class="bg-nav-dark text-white py-12 mt-12">
         <div class="container mx-auto px-6">
-            <div class="text-center">
-                <p class="font-poppins">Powered by NASA Earth Observation Data</p>
-                <p class="text-gray-400 text-sm mt-2 font-poppins">© 2025 SpacePals. All rights reserved.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <img src="assets/logo.png" alt="Weather Logo" class="h-12 w-auto mr-3">
+                        <span class="text-xl font-space font-bold">WeatherPals</span>
+                    </div>
+                    <p class="text-gray-400 font-poppins text-sm">
+                        Advanced weather analytics powered by NASA Earth observation data and Meteomatics API
+                    </p>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-space font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#hero" class="text-gray-400 hover:text-blue-400 transition-colors font-poppins text-sm">Home</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-blue-400 transition-colors font-poppins text-sm">About</a></li>
+                        <li><a href="#results-section" class="text-gray-400 hover:text-blue-400 transition-colors font-poppins text-sm">Analysis</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-space font-bold mb-4">Data Sources</h4>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400 font-poppins text-sm">🛰️ NASA Earth Data</li>
+                        <li class="text-gray-400 font-poppins text-sm">🌦️ Meteomatics API</li>
+                        <li class="text-gray-400 font-poppins text-sm">🗺️ OpenStreetMap</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8 text-center">
+                <p class="font-poppins text-gray-400">Powered by NASA Earth Observation Data & Meteomatics API</p>
+                <p class="text-gray-500 text-sm mt-2 font-poppins">© 2025 WeatherPals. All rights reserved.</p>
             </div>
         </div>
     </footer>
