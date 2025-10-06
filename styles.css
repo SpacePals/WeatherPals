@@ -1,5 +1,3 @@
-/* Enhanced styles.css - NASA Weather Dashboard */
-
 /* ==================== CUSTOM COLORS ==================== */
 .text-red-600 { color: #dc2626; }
 .bg-red-500 { background-color: #ef4444; }
@@ -61,6 +59,21 @@ html {
     animation: slideIn 0.6s ease-out forwards;
 }
 
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slideUp {
+    animation: slideUp 0.6s ease-out forwards;
+}
+
 @keyframes shimmer {
     0% {
         background-position: -1000px 0;
@@ -89,52 +102,83 @@ html {
     animation: pulse-glow 2s ease-in-out infinite;
 }
 
-/* ==================== PROBABILITY CARDS ==================== */
-.probability-card {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 2px solid #e5e7eb;
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ==================== EVENT BUTTONS ==================== */
+.event-btn {
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    background: white;
 }
 
-.probability-card::before {
+.event-btn::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
-    transform-origin: left;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
 }
 
-.probability-card:hover::before {
-    transform: scaleX(1);
+.event-btn:active::before {
+    width: 300px;
+    height: 300px;
 }
 
-.probability-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.2);
-    border-color: #3b82f6;
+.event-btn.active {
+    background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+    color: white !important;
+    transform: scale(1.05);
+    border-color: #3b82f6 !important;
 }
 
-.probability-card::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    transform: scale(0);
-    transition: transform 0.6s ease;
+/* ==================== WEATHER CARDS ==================== */
+.weather-card {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
 }
 
-.probability-card:hover::after {
-    transform: scale(1);
+.weather-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+/* ==================== RECOMMENDATION LEVELS ==================== */
+.recommendation-excellent {
+    border-left-color: #10b981 !important;
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7) !important;
+}
+
+.recommendation-good {
+    border-left-color: #3b82f6 !important;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe) !important;
+}
+
+.recommendation-fair {
+    border-left-color: #f59e0b !important;
+    background: linear-gradient(135deg, #fffbeb, #fef3c7) !important;
+}
+
+.recommendation-poor {
+    border-left-color: #ef4444 !important;
+    background: linear-gradient(135deg, #fef2f2, #fee2e2) !important;
+}
+
+/* ==================== LOADING SPINNER ==================== */
+.loading-spinner {
+    border: 3px solid #f3f4f6;
+    border-top: 3px solid #3b82f6;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
 }
 
 /* ==================== PROGRESS BARS ==================== */
@@ -160,37 +204,6 @@ html {
     100% { left: 200%; }
 }
 
-/* ==================== RISK LEVEL INDICATORS ==================== */
-.risk-high {
-    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-    border-left: 5px solid #dc2626;
-    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.1);
-}
-
-.risk-high:hover {
-    box-shadow: 0 8px 25px rgba(220, 38, 38, 0.2);
-}
-
-.risk-medium {
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-    border-left: 5px solid #f59e0b;
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.1);
-}
-
-.risk-medium:hover {
-    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.2);
-}
-
-.risk-low {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    border-left: 5px solid #16a34a;
-    box-shadow: 0 4px 15px rgba(22, 163, 74, 0.1);
-}
-
-.risk-low:hover {
-    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.2);
-}
-
 /* ==================== FORM ELEMENTS ==================== */
 input[type="text"],
 input[type="search"] {
@@ -200,68 +213,6 @@ input[type="search"] {
 input[type="text"]:focus,
 input[type="search"]:focus {
     transform: scale(1.01);
-}
-
-input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 8px;
-    border-radius: 4px;
-    background: linear-gradient(to right, #e5e7eb 0%, #e5e7eb 100%);
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-input[type="range"]:hover {
-    background: linear-gradient(to right, #d1d5db 0%, #d1d5db 100%);
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-    transition: all 0.2s ease;
-}
-
-input[type="range"]::-webkit-slider-thumb:hover {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    transform: scale(1.15);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-
-input[type="range"]::-moz-range-thumb {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    cursor: pointer;
-    border: 3px solid white;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-    transition: all 0.2s ease;
-}
-
-input[type="range"]::-moz-range-thumb:hover {
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    transform: scale(1.15);
-}
-
-input[type="checkbox"] {
-    accent-color: #3b82f6;
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-input[type="checkbox"]:hover {
-    transform: scale(1.1);
 }
 
 /* ==================== BUTTONS ==================== */
@@ -293,79 +244,6 @@ button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none !important;
-}
-
-/* ==================== NOTIFICATION MESSAGES ==================== */
-.success-message {
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    padding: 1.25rem 1.75rem;
-    border-radius: 1rem;
-    margin: 1rem 0;
-    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4);
-    border-left: 5px solid #047857;
-    animation: slideIn 0.5s ease-out;
-    position: relative;
-    overflow: hidden;
-}
-
-.success-message::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    animation: shine 2s infinite;
-}
-
-.info-message {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    color: white;
-    padding: 1.25rem 1.75rem;
-    border-radius: 1rem;
-    margin: 1rem 0;
-    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4);
-    border-left: 5px solid #1d4ed8;
-    animation: slideIn 0.5s ease-out;
-}
-
-.error-message {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
-    padding: 1.25rem 1.75rem;
-    border-radius: 1rem;
-    margin: 1rem 0;
-    box-shadow: 0 12px 30px rgba(239, 68, 68, 0.4);
-    border-left: 5px solid #b91c1c;
-    animation: slideIn 0.5s ease-out;
-}
-
-@keyframes shine {
-    0% { left: -100%; }
-    100% { left: 200%; }
-}
-
-/* ==================== LOADING STATE ==================== */
-.loading {
-    opacity: 0.6;
-    pointer-events: none;
-    position: relative;
-}
-
-.loading::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255,255,255,0.9);
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 /* ==================== HERO SECTION ENHANCEMENTS ==================== */
@@ -424,11 +302,42 @@ nav a {
     background: linear-gradient(to bottom, #2563eb, #1d4ed8);
 }
 
+/* ==================== SCROLL TO TOP BUTTON ==================== */
+.scroll-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: rgba(37, 99, 235, 0.9);
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.scroll-to-top:hover {
+    background-color: rgb(37, 99, 235);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* ==================== RESPONSIVE ADJUSTMENTS ==================== */
 @media (max-width: 768px) {
     #hero {
         min-height: 90vh;
-        py: 16;
     }
     
     #hero h1 {
@@ -440,7 +349,7 @@ nav a {
         font-size: 1.125rem;
     }
     
-    .probability-card {
+    .weather-card {
         margin-bottom: 1.5rem;
     }
     
@@ -468,42 +377,6 @@ nav a {
     }
 }
 
-/* ==================== PRINT STYLES ==================== */
-@media print {
-    .no-print,
-    nav,
-    footer,
-    button {
-        display: none !important;
-    }
-    
-    .probability-card {
-        break-inside: avoid;
-        box-shadow: none !important;
-        border: 2px solid #ccc !important;
-        page-break-inside: avoid;
-    }
-    
-    body {
-        background: white;
-    }
-}
-
-/* ==================== DARK MODE SUPPORT ==================== */
-@media (prefers-color-scheme: dark) {
-    .dark\:bg-gray-900 {
-        background-color: #111827;
-    }
-    
-    .dark\:text-white {
-        color: white;
-    }
-    
-    .dark\:border-gray-700 {
-        border-color: #374151;
-    }
-}
-
 /* ==================== ACCESSIBILITY ==================== */
 button:focus-visible,
 input:focus-visible,
@@ -514,7 +387,6 @@ a:focus-visible {
     border-radius: 4px;
 }
 
-/* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -570,4 +442,10 @@ a:focus-visible {
 
 .card-interactive:active {
     transform: translateY(-4px) scale(1.01);
+}
+
+/* ==================== SMOOTH SCROLLING ==================== */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 50px; 
 }

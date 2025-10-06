@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeatherPals</title>
-    <meta name="description" content="Real-time weather analysis using NASA Earth observation data and Meteomatics API">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+     <link rel="icon" type="image/x-icon" href="/assets/logo.png">
+
     
     <script>
         tailwind.config = {
@@ -31,17 +34,14 @@
     <!-- Navigation Bar -->
     <nav class="bg-nav-dark p-4 shadow-2xl sticky top-0 z-50 backdrop-blur-sm">
         <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center group">
-                <img src="assets/logo.png" alt="Weather Logo" class="h-16 w-auto mr-3 transition-transform duration-300 group-hover:scale-110">
-                <span class="text-white text-2xl font-space font-bold hover:text-blue-400 transition-colors duration-300 cursor-pointer">WeatherPals</span>
+            <div class="flex items-center group cursor-pointer">
+                <a href="#hero" class="flex items-center">
+                <img src="assets/logo.png"  alt="Logo" class="h-16 w-auto mr-3 transition-transform duration-300 group-hover:scale-110">
+                <span href="#hero"class="text-white text-2xl font-space font-bold hover:text-blue-400 transition-colors duration-300 cursor-pointer">SpacePals</span>
             </div>
-            <div class="hidden md:flex space-x-6">
+            <div class="hidden md:flex space-x-6"> 
                 <a href="#hero" class="text-white hover:text-blue-400 transition-all duration-300 hover:scale-105 font-poppins relative group">
                     Home
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-                <a href="#results-section" class="text-white hover:text-blue-400 transition-all duration-300 hover:scale-105 font-poppins relative group">
-                    Analysis
                     <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-400 transition-all duration-300 group-hover:w-full"></span>
                 </a>
                 <a href="#about" class="text-white hover:text-blue-400 transition-all duration-300 hover:scale-105 font-poppins relative group">
@@ -62,65 +62,176 @@
     <!-- Hero Section -->
     <section id="hero" class="relative flex items-center overflow-hidden bg-black py-24 min-h-screen">
         <div class="absolute inset-0">
-            <img src="https://images.pexels.com/photos/433155/pexels-photo-433155.jpeg?cs=srgb&dl=pexels-pixabay-433155.jpg&fm=jpg" 
+            <img src="https://images-ext-1.discordapp.net/external/RFmSiFij0_cJBXcPX9Zr6CKUeW0wvOyuRZgXnfvXkpA/https/w0.peakpx.com/wallpaper/60/652/HD-wallpaper-blue-sky-summer-sky-summer-clouds-nature.jpg?format=webp" 
                  class="w-full h-full object-cover opacity-70" 
-                 alt="Dynamic NASA Image">
+                 alt="Hero Image">
             <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60"></div>
         </div>
         
         <div class="container mx-auto px-6 relative z-20">
-            <div class="text-white max-w-4xl">
-                <div class="opacity-0 animate-fadeIn" style="animation-delay: 0.2s">
-                    <h1 class="text-6xl md:text-7xl font-space font-bold mb-6 tracking-tight leading-tight">
-                        <span class="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">WeatherPals</span>
-                        <span class="block mt-2">Dashboard</span>
-                    </h1>
-                    <p class="text-xl md:text-2xl mb-8 font-poppins text-gray-200 max-w-2xl">
-                        Analyze real-time weather conditions and probabilities using Meteomatics API
-                    </p>
-                </div>
-                
-                <div class="bg-white bg-opacity-95 backdrop-blur-md rounded-2xl p-8 shadow-2xl max-w-2xl opacity-0 animate-fadeIn hover:shadow-blue-500/20 transition-all duration-500" style="animation-delay: 0.6s">
-                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-4">🌍 Search Location</h3>
+            <div class="flex flex-col lg:flex-row gap-8 items-start">
+                <div class="text-white lg:w-1/2">
+                    <div class="opacity-0 animate-fadeIn" style="animation-delay: 0.2s">
+                        <h1 class="text-6xl md:text-7xl font-space font-bold mb-6 tracking-tight leading-tight">
+                            <span class="block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">WeatherPals</span>
+                            <span class="block mt-2">Dashboard</span>
+                        </h1>
+                    </div>
                     
-                    <div class="flex mb-4">
-                        <input type="text" 
-                               id="location-search" 
-                               placeholder="Enter city, country, or coordinates..." 
-                               class="p-4 w-full rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 font-poppins transition-all duration-300 border-2 border-gray-200 focus:border-blue-500">
-                        <button id="search-btn" 
-                                class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-r-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 hover:scale-105 transform font-poppins font-semibold hover:shadow-lg shadow-blue-500/50 active:scale-95">
-                            Search
+                    <div class="bg-white bg-opacity-95 backdrop-blur-md rounded-2xl p-8 shadow-2xl opacity-0 animate-fadeIn hover:shadow-blue-500/20 transition-all duration-500" style="animation-delay: 0.6s">
+                        <h3 class="text-2xl font-space font-bold text-gray-800 mb-4">🌍 Search Location</h3>
+                        
+                        <div class="flex mb-4">
+                            <input type="text" 
+                                   id="location-search" 
+                                   placeholder="Enter city, country, or coordinates..." 
+                                   class="p-4 w-full rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 font-poppins transition-all duration-300 border-2 border-gray-200 focus:border-blue-500">
+                            <button id="search-btn" 
+                                    class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-r-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 hover:scale-105 transform font-poppins font-semibold hover:shadow-lg shadow-blue-500/50 active:scale-95">
+                                Search
+                            </button>
+                        </div>
+                        
+
+                        <h3 class="text-2xl font-space font-bold text-gray-800 mb-4">🎉 Select Event Type</h3>
+                        <div class="grid grid-cols-2 gap-3 mb-6">
+                            <button class="event-btn bg-white border-2 border-gray-300 p-4 rounded-xl text-gray-700 font-semibold hover:scale-105 transition-all duration-300" data-event="parade">
+                                🎊 Parade
+                            </button>
+                            <button class="event-btn bg-white border-2 border-gray-300 p-4 rounded-xl text-gray-700 font-semibold hover:scale-105 transition-all duration-300" data-event="concert">
+                                🎵 Concert
+                            </button>
+                            <button class="event-btn bg-white border-2 border-gray-300 p-4 rounded-xl text-gray-700 font-semibold hover:scale-105 transition-all duration-300" data-event="sports">
+                                ⚽ Sports Game
+                            </button>
+                            <button class="event-btn bg-white border-2 border-gray-300 p-4 rounded-xl text-gray-700 font-semibold hover:scale-105 transition-all duration-300" data-event="picnic">
+                                🧺 Picnic
+                            </button>
+                            <button class="event-btn bg-white border-2 border-gray-300 p-4 rounded-xl text-gray-700 font-semibold hover:scale-105 transition-all duration-300" data-event="wedding">
+                                🌱 Gardening
+                            </button>
+                            <button class="event-btn bg-white border-2 border-gray-300 p-4 rounded-xl text-gray-700 font-semibold hover:scale-105 transition-all duration-300" data-event="festival">
+                                🎪 Festival
+                            </button>
+                        </div>
+
+                        
+                        <button id="analyze-btn" disabled
+                                class="w-full bg-gradient-to-r from-green-600 to-green-700 text-white p-4 rounded-xl font-space font-bold text-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95">
+                            Get Weather Advice 🌤️
                         </button>
                     </div>
-                    
-                    <div class="flex items-center text-gray-700 bg-gray-50 p-3 rounded-lg">
-                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
-                        </svg>
-                        <span class="text-sm font-poppins font-medium" id="selected-location">Enter a location to begin analysis</span>
-                    </div>
                 </div>
                 
-                <div class="mt-8 flex flex-wrap gap-4 opacity-0 animate-fadeIn" style="animation-delay: 0.9s">
-                    <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
-                        <span class="text-sm font-poppins">🛰️ Real-time Data</span>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
-                        <span class="text-sm font-poppins">🌦️ Weather Probabilities</span>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
-                        <span class="text-sm font-poppins">📊 Advanced Analytics</span>
+                <div class="lg:w-1/2 opacity-0 animate-fadeIn" style="animation-delay: 0.8s">
+                    <div id="map" class="w-full h-[500px] rounded-2xl shadow-2xl overflow-hidden"></div>
+                    
+                    <!-- Date and Time Selection -->
+                    <div class="bg-white bg-opacity-95 backdrop-blur-md rounded-2xl p-6 shadow-2xl mt-6">
+                        <h3 class="text-xl font-space font-bold text-gray-800 mb-4">📅 Event Date & Time</h3>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="event-date" class="block text-sm font-semibold text-gray-700 mb-2">Date</label>
+                                <input type="date" 
+                                       id="event-date" 
+                                       class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none text-gray-800 font-poppins transition-all duration-300">
+                            </div>
+                            
+                            <div>
+                                <label for="event-time" class="block text-sm font-semibold text-gray-700 mb-2">Time</label>
+                                <input type="time" 
+                                       id="event-time" 
+                                       class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none text-gray-800 font-poppins transition-all duration-300">
+                            </div>
+                        </div>
+                        
+                        
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Scroll indicator -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-            </svg>
+    </section>
+
+    <!-- Results Section -->
+    <section id="results" class="py-16 bg-gray-50 min-h-screen hidden">
+        <div class="container mx-auto px-6">
+            <div id="loading" class="flex flex-col items-center justify-center py-20 hidden">
+                <div class="loading-spinner mb-4"></div>
+                <p class="text-gray-600 font-poppins text-lg">Analyzing weather conditions...</p>
+            </div>
+
+            <div id="weather-results" class="hidden">
+                <!-- Overall Recommendation -->
+                <div id="overall-recommendation" class="weather-card rounded-2xl p-8 shadow-xl mb-8 animate-slideUp">
+                    <div class="flex items-start justify-between mb-6">
+                        <div>
+                            <h2 class="text-4xl font-space font-bold text-gray-800 mb-2" id="recommendation-title">Weather Analysis</h2>
+                            <p class="text-gray-600 font-poppins" id="event-location-display"></p>
+                        </div>
+                        <div id="recommendation-icon" class="text-6xl"></div>
+                    </div>
+                    <div id="recommendation-text" class="text-lg font-poppins text-gray-700 mb-4"></div>
+                    <div id="recommendation-details" class="text-base font-poppins text-gray-600"></div>
+                </div>
+
+                <!-- Current Weather -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300">
+                        <div class="flex items-center mb-2">
+                            <span class="text-3xl mr-3">🌡️</span>
+                            <h3 class="text-lg font-semibold text-gray-800">Temperature</h3>
+                        </div>
+                        <p id="temp-value" class="text-3xl font-bold text-blue-600">--°C</p>
+                        <p id="temp-feel" class="text-sm text-gray-600 mt-1">Feels like --°C</p>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300">
+                        <div class="flex items-center mb-2">
+                            <span class="text-3xl mr-3">💧</span>
+                            <h3 class="text-lg font-semibold text-gray-800">Precipitation</h3>
+                        </div>
+                        <p id="precip-value" class="text-3xl font-bold text-blue-600">--%</p>
+                        <p id="precip-desc" class="text-sm text-gray-600 mt-1">--</p>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300">
+                        <div class="flex items-center mb-2">
+                            <span class="text-3xl mr-3">💨</span>
+                            <h3 class="text-lg font-semibold text-gray-800">Wind Speed</h3>
+                        </div>
+                        <p id="wind-value" class="text-3xl font-bold text-blue-600">-- km/h</p>
+                        <p id="wind-desc" class="text-sm text-gray-600 mt-1">--</p>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-2xl transition-all duration-300">
+                        <div class="flex items-center mb-2">
+                            <span class="text-3xl mr-3">☁️</span>
+                            <h3 class="text-lg font-semibold text-gray-800">Cloud Cover</h3>
+                        </div>
+                        <p id="cloud-value" class="text-3xl font-bold text-blue-600">--%</p>
+                        <p id="cloud-desc" class="text-sm text-gray-600 mt-1">--</p>
+                    </div>
+                </div>
+
+                <!-- Detailed Advice -->
+                <div class="bg-white rounded-2xl p-8 shadow-xl">
+                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-6">📋 Detailed Recommendations</h3>
+                    <div id="detailed-advice" class="space-y-4"></div>
+                </div>
+
+                <div class="mt-8 text-center flex flex-wrap justify-center gap-4">
+                    <button id="reset-btn"  class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 hover:scale-105">
+                        Check Another Location
+                    </button>
+                    <button id="export-csv-btn" class="bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-green-700 hover:to-green-800 transition-all duration-300 hover:scale-105">
+                        📊 Export CSV
+                    </button>
+                    <button id="export-json-btn" class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-8 py-4 rounded-xl font-semibold hover:from-purple-700 hover:to-purple-800 transition-all duration-300 hover:scale-105">
+                        📄 Export JSON
+                    </button>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -128,65 +239,74 @@
     <section id="about" class="py-16 bg-gradient-to-b from-gray-50 to-white">
         <div class="container mx-auto px-6">
             <div class="text-center mb-12">
-                <h2 class="text-4xl font-space font-bold text-gray-800 mb-4">Powered by Advanced Technology</h2>
+                <h2 class="text-4xl font-space font-bold text-gray-800 mb-4">How It Works</h2>
                 <p class="text-gray-600 font-poppins text-lg max-w-2xl mx-auto">
-                    Combining NASA Earth observation data with cutting-edge weather APIs for accurate predictions
+                    We analyze real-time weather data and translate it into simple, actionable advice for your outdoor events
                 </p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-                    <div class="text-5xl mb-4">🛰️</div>
-                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-3">Satellite Data</h3>
-                    <p class="text-gray-600 font-poppins">Access real-time weather data from Meteomatics API integrated with NASA Earth observations</p>
+                    <div class="text-5xl mb-4">🎯</div>
+                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-3">Event-Specific Advice</h3>
+                    <p class="text-gray-600 font-poppins">Customised recommendations for parades, concerts, sports games, picnics, gardening, and festivals</p>
                 </div>
                 
                 <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-                    <div class="text-5xl mb-4">📊</div>
-                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-3">Smart Analysis</h3>
-                    <p class="text-gray-600 font-poppins">Advanced algorithms calculate weather probabilities based on precipitation patterns</p>
+                    <div class="text-5xl mb-4">🌐</div>
+                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-3">Real-Time Data</h3>
+                    <p class="text-gray-600 font-poppins">Access current weather conditions from reliable sources worldwide using Open-Meteo API</p>
                 </div>
                 
                 <div class="bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-100">
-                    <div class="text-5xl mb-4">🌍</div>
-                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-3">Global Coverage</h3>
-                    <p class="text-gray-600 font-poppins">Get weather insights for any location worldwide with precise coordinate-based queries</p>
+                    <div class="text-5xl mb-4">💬</div>
+                    <h3 class="text-2xl font-space font-bold text-gray-800 mb-3">Human-Friendly</h3>
+                    <p class="text-gray-600 font-poppins">No complex meteorology - just clear, actionable advice you can understand and act on</p>
                 </div>
             </div>
+        </div>
+        <div class="flex justify-center items-center mt-12">
+            <img src="https://assets.spaceappschallenge.org/media/images/Colorway2-Color_Black3x_AWgTfqW.width-500.png" alt="NASA Space Apps Challenge" class="h-28 w-auto">
         </div>
     </section>
 
     <!-- Footer -->
     <footer id="footer" class="bg-nav-dark text-white py-12 mt-12">
         <div class="container mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 <div>
                     <div class="flex items-center mb-4">
                         <img src="assets/logo.png" alt="Weather Logo" class="h-12 w-auto mr-3">
-                        <span class="text-xl font-space font-bold">WeatherPals</span>
+                        <span class="text-xl font-space font-bold">SpacePals</span>
                     </div>
-                    <p class="text-gray-400 font-poppins text-sm">
-                        Advanced weather analytics powered by NASA Earth observation data and Meteomatics API
+                    <p class="text-gray-400 font-poppins text-sm mb-6">
+                       Weather analytics powered by Open-Meteo API for event planning
                     </p>
                 </div>
                 
-                <div>
+                <div class="md:text-right">
                     <h4 class="text-lg font-space font-bold mb-4">Quick Links</h4>
                     <ul class="space-y-2">
                         <li><a href="#hero" class="text-gray-400 hover:text-blue-400 transition-colors font-poppins text-sm">Home</a></li>
                         <li><a href="#about" class="text-gray-400 hover:text-blue-400 transition-colors font-poppins text-sm">About</a></li>
-                        <li><a href="#results-section" class="text-gray-400 hover:text-blue-400 transition-colors font-poppins text-sm">Analysis</a></li>
                     </ul>
                 </div>
                 
             </div>
             
             <div class="border-t border-gray-700 pt-8 text-center">
-                <p class="font-poppins text-gray-400">Powered by Meteomatics API</p>
-                <p class="text-gray-500 text-sm mt-2 font-poppins">Made by SpacePals</p>
+                <p class="font-poppins text-gray-400">Powered by Open-Meteo Weather API</p>
+                <p class="text-gray-500 text-sm mt-2 font-poppins">WeatherPals | Made by SpacePals</p>
             </div>
         </div>
     </footer>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </button>
 
     <script src="app.js"></script>
 </body>
